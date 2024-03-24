@@ -1,14 +1,13 @@
 import { isPlatformServer } from '@angular/common';
 import {
-  AfterViewChecked,
-  AfterViewInit,
+  AfterContentChecked,
+  AfterContentInit,
   Component,
   Directive,
   ElementRef,
   EventEmitter,
   forwardRef,
   inject,
-  Inject,
   Input,
   NgZone,
   OnChanges,
@@ -36,14 +35,13 @@ declare const jQuery: any;
   }],
   template: '<ng-content></ng-content>',
 })
-export class SlickCarouselComponent implements OnDestroy, OnChanges, AfterViewInit, AfterViewChecked {
-
-    @Input() config: any;
-    @Output() afterChange: EventEmitter<{ event: any, slick: any, currentSlide: number, first: boolean, last: boolean }> = new EventEmitter();
-    @Output() beforeChange: EventEmitter<{ event: any, slick: any, currentSlide: number, nextSlide: number }> = new EventEmitter();
-    @Output() breakpoint: EventEmitter<{ event: any, slick: any, breakpoint: any }> = new EventEmitter();
-    @Output() destroy: EventEmitter<{ event: any, slick: any }> = new EventEmitter();
-    @Output() init: EventEmitter<{ event: any, slick: any }> = new EventEmitter();
+export class SlickCarouselComponent implements OnDestroy, OnChanges, AfterContentInit, AfterContentChecked {
+  @Input() config: any;
+  @Output() afterChange: EventEmitter<{ event: any, slick: any, currentSlide: number, first: boolean, last: boolean }> = new EventEmitter();
+  @Output() beforeChange: EventEmitter<{ event: any, slick: any, currentSlide: number, nextSlide: number }> = new EventEmitter();
+  @Output() breakpoint: EventEmitter<{ event: any, slick: any, breakpoint: any }> = new EventEmitter();
+  @Output() destroy: EventEmitter<{ event: any, slick: any }> = new EventEmitter();
+  @Output() init: EventEmitter<{ event: any, slick: any }> = new EventEmitter();
 
   public $instance: any;
 
@@ -66,14 +64,14 @@ export class SlickCarouselComponent implements OnDestroy, OnChanges, AfterViewIn
     this.unslick();
   }
 
-  ngAfterViewInit(): void {
-    this.ngAfterViewChecked();
+  ngAfterContentInit(): void {
+    this.ngAfterContentChecked();
   }
 
   /**
    * On component view checked
    */
-  ngAfterViewChecked() {
+  ngAfterContentChecked() {
     if (this.isServer) {
       return;
     }
